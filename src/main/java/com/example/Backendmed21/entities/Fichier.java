@@ -24,4 +24,14 @@ public class Fichier {
 
     @Lob
     private byte[] data;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_news")
+    private News news;
+    public Fichier(String titre, String fileType, byte[] data, News news1) {
+        this.titre = titre;
+        this.fileType = fileType;
+        this.data = data;
+        this.news = news1;
+    }
 }
