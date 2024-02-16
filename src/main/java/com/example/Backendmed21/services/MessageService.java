@@ -1,6 +1,7 @@
 package com.example.Backendmed21.services;
 
 import com.example.Backendmed21.entities.Message;
+import com.example.Backendmed21.entities.News;
 import com.example.Backendmed21.repositories.MessageRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,8 @@ public class MessageService {
 
     @Transactional
     public void SupprimerMessage (Long id) {
-        Message f = agr.getById(id);
-        agr.delete(f);
+        Message message = getMessageById(id);
+        agr.delete(message);
     }
 
     @Transactional

@@ -1,34 +1,28 @@
 package com.example.Backendmed21.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Blob;
-import java.util.Set;
+import java.util.Date;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-
-public class News {
+public class Discour {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     @Column(name="titre")
     private String titre;
-    @Column (name="description")
-    private String description;
-   @Lob
-   private Blob image;
-
-   /* @JsonIgnore
-    @OneToMany(mappedBy = "news", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Fichier> fichiers;*/
+    @Temporal(TemporalType.DATE)
+    @Column(name = "date_disc", nullable = false)
+    private Date date_disc;
+    @Column (name="discour")
+    private String discour;
 
 }
