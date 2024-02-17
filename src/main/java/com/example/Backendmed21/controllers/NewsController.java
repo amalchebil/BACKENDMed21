@@ -2,6 +2,7 @@ package com.example.Backendmed21.controllers;
 
 import com.example.Backendmed21.entities.Fichier;
 import com.example.Backendmed21.entities.News;
+import com.example.Backendmed21.entities.NewsResponse;
 import com.example.Backendmed21.repositories.FichierRepository;
 import com.example.Backendmed21.services.NewsService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,6 +20,7 @@ import javax.sql.rowset.serial.SerialException;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin(origins="http://localhost:3000")
@@ -33,12 +35,14 @@ public class NewsController {
 
 
     @PostMapping("/ADDNews")
-    public String addNews (HttpServletRequest request, @RequestParam("image") MultipartFile file) throws IOException, SerialException, SQLException {
+    public String addNews (HttpServletRequest request, @RequestParam("image") MultipartFile file,@RequestParam ("titre") String T,@RequestParam ("description") String d) throws IOException, SerialException, SQLException {
 
         byte[] bytes = file.getBytes();
         Blob blob = new javax.sql.rowset.serial.SerialBlob(bytes);
         News news= new News();
         news.setImage(blob);
+        news.setDescription(d);
+        news.setTitre(T);
         cltS.AjouterNews(news);
         return "redirect:/";
 
@@ -68,18 +72,48 @@ public class NewsController {
         return cltS.getNewsById(id);
     }
 
+    @GetMapping("/getAllNews")
+    public ResponseEntity<List<NewsResponse>> getAllNews() throws SQLException {
+        List<News> newsList = cltS.ListNews();
 
+        if (newsList.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        List<NewsResponse> newsResponses = new ArrayList<>();
+
+        for (News news : newsList) {
+            byte[] imageBytes = news.getImage().getBytes(1, (int) news.getImage().length());
+            NewsResponse newsResponse = new NewsResponse(news.getId(), news.getTitre(), news.getDescription(), imageBytes);
+            newsResponses.add(newsResponse);
+        }
+
+        return ResponseEntity.ok().body(newsResponses);
+    }
 
 
 
     // display image
     @GetMapping("/display")
-    public ResponseEntity<byte[]> displayImage(@RequestParam("id") long id) throws IOException, SQLException
+    public ResponseEntity<NewsResponse> displayImage(@RequestParam("id") long id) throws IOException, SQLException
     {
-        News image = cltS.getNewsById(id);
-        byte [] imageBytes = null;
-        imageBytes = image.getImage().getBytes(1,(int) image.getImage().length());
-        return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(imageBytes);
+
+
+
+
+
+
+        News news = cltS.getNewsById(id);
+
+        if (news == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        byte[] imageBytes = news.getImage().getBytes(1, (int) news.getImage().length());
+
+            NewsResponse newsResponse = new NewsResponse(news.getId(), news.getTitre(), news.getDescription(), imageBytes);
+
+        return ResponseEntity.ok().body(newsResponse);
     }
 
 

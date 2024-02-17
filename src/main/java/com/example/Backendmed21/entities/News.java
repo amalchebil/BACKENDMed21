@@ -24,7 +24,7 @@ public class News {
     private String titre;
     @Column (name="description")
     private String description;
-   @Lob
+ @Lob
    private Blob image;
 
    /* @JsonIgnore
