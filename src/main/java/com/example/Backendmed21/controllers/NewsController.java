@@ -1,20 +1,15 @@
 package com.example.Backendmed21.controllers;
 
-import com.example.Backendmed21.entities.Fichier;
 import com.example.Backendmed21.entities.News;
 import com.example.Backendmed21.entities.NewsResponse;
-import com.example.Backendmed21.repositories.FichierRepository;
 import com.example.Backendmed21.services.NewsService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.sql.rowset.serial.SerialException;
 import java.io.IOException;
@@ -29,8 +24,6 @@ import java.util.List;
 public class NewsController {
     @Autowired
     private NewsService cltS ;
-    @Autowired
-   private FichierRepository fichierRepository;
 
 
 
@@ -47,11 +40,6 @@ public class NewsController {
         return "redirect:/";
 
     }
-
-
-
-
-
     @PostMapping("/UPDATENews")
     public News UpdateNews (@Validated @RequestBody @Valid News f) {
         return cltS.ModifierNews(f);
@@ -62,10 +50,6 @@ public class NewsController {
         cltS.deleteNews(id);
     }
 
-    @GetMapping("/GETALLNews")
-    public List<News> GETALLNews(){
-        return cltS.ListNews();
-    }
 
     @GetMapping("/GETNewsBYID/{id}")
     public News GetNewsById(@PathVariable Long id){
@@ -98,11 +82,6 @@ public class NewsController {
     public ResponseEntity<NewsResponse> displayImage(@RequestParam("id") long id) throws IOException, SQLException
     {
 
-
-
-
-
-
         News news = cltS.getNewsById(id);
 
         if (news == null) {
@@ -116,6 +95,14 @@ public class NewsController {
         return ResponseEntity.ok().body(newsResponse);
     }
 
+
+
+
+
+ /*@GetMapping("/GETALLNews")
+    public List<News> GETALLNews(){
+        return cltS.ListNews();
+    }*/
 
 
 
