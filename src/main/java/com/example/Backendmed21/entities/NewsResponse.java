@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Date;
+
 
 @Getter
 @Setter
@@ -11,6 +13,7 @@ public class NewsResponse {
     private Long id;
     private String title;
     private String description;
+    private Date date;
     private byte[] image; // Si vous préférez renvoyer l'image sous forme de tableau de bytes
 
     // Constructeurs, getters et setters

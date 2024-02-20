@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Blob;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.Set;
 
 @Getter
@@ -24,6 +26,8 @@ public class News {
     private String titre;
     @Column (name="description")
     private String description;
+    @Temporal(TemporalType.DATE)
+    private LocalDate date_news;
  @Lob
    private Blob image;
 

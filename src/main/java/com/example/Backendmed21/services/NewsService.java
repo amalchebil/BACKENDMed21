@@ -5,6 +5,7 @@ import com.example.Backendmed21.repositories.NewsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -14,7 +15,7 @@ public class NewsService {
     @Autowired
     private NewsRepository clt;
     public News AjouterNews(News f) {
-
+        f.setDate_news(LocalDate.now());
         return clt.save(f);
     }
 

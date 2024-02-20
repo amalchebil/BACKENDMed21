@@ -15,6 +15,7 @@ import javax.sql.rowset.serial.SerialException;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +37,7 @@ public class NewsController {
         news.setImage(blob);
         news.setDescription(d);
         news.setTitre(T);
+
         cltS.AjouterNews(news);
         return "redirect:/";
 
@@ -51,10 +53,7 @@ public class NewsController {
     }
 
 
-    @GetMapping("/GETNewsBYID/{id}")
-    public News GetNewsById(@PathVariable Long id){
-        return cltS.getNewsById(id);
-    }
+
 
     @GetMapping("/getAllNews")
     public ResponseEntity<List<NewsResponse>> getAllNews() throws SQLException {
