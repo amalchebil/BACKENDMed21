@@ -8,6 +8,7 @@ import com.example.Backendmed21.services.PrixavenirService;
 import com.example.Backendmed21.services.PrixdecernerService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -20,14 +21,16 @@ import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Optional;
+@Slf4j
 @CrossOrigin(origins="*")
 @RestController
 @RequestMapping("/Prixavenir")
 public class PrixavenirController {
     @Autowired
     private PrixavenirService cltS ;
-    private PrixdecernerService p ;
+    @Autowired
+    private PrixdecernerRepository p ;
 
 
     @PostMapping("/ADDPrixavenir")
@@ -39,7 +42,8 @@ public class PrixavenirController {
         Prixavenir.setImage(blob);
         Prixavenir.setDescription(d);
         Prixavenir.setNom_prix(T);
-        Prixavenir.setHistorique(p.getPrixdecernerById(historique));
+
+        Prixavenir.setHistorique(p.getById(historique));
 
         cltS.AjouterPrixavenir(Prixavenir);
         return "redirect:/";
